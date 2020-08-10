@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import JssForm
 from .models import Jasoseol
+from django.http import Http404 
 # import templates
 
 # Create your views here.
@@ -17,3 +18,27 @@ def create(request):
             return redirect('index')
     jss_form = JssForm()
     return render(request, 'create.html', {'jss_form':jss_form})
+
+def detail(request, jss_id):
+    try:
+        my_jss = Jasoseol.objects.get(pk=jss_id)
+    except:
+        raise Http404
+    
+    return render(request, 'detail.html', {'my_jss':my_jss})
+
+def delete(request, jss_id):
+    my_jss = Jasoseol.objects.get(pk=jss_id)
+    my_jss.delete()
+    return redirect('index')
+
+def update(request, jss_id):
+    my_jss = Jasoseol.objects.get(pk=jss_id)
+    jss_form = JssForm(instance=my_jss)
+    if request.method == "POST":
+        updated_form = JssForm(request.POST, instance=my_jss)
+        if updated_form.is_valid():
+            updated_form.save()
+            return redirect ('index')
+    return render(request, 'create.html', {'jss_form':jss_form})
+   
