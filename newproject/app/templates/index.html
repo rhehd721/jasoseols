@@ -39,17 +39,21 @@
         <p> 자기소개서 작성</p>
     </div>
 
-    <div class= "all_jss">
-        <p>자기소개서 제목</p>
+    <a href="{% url 'my_index'%}">
+    <button>내꺼</button>
+    </a>
+    <a href="{% url 'index'%}">
+    <button>모두</button>
+    </a>
 
-        <p>자기소개서 내용</p>
+    <br>
 
-        <p>날짜</p>
-    </div>
     
     {% for jss in all_jss%}
     <a href = "{%url 'detail' jss.id%}">
     <div class= "all_jss">
+        <p>{{jss.author}}</p>
+
         <p>{{jss.title}}</p>
 
         <p>{{jss.content}}</p>
